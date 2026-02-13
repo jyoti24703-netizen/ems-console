@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 ﻿import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 
@@ -31,7 +32,7 @@ const AdminNoticePanel = () => {
   // Fetch notices
   const fetchNotices = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/notices?includeExpired=true", {
+      const res = await fetch(`${API_BASE_URL}/api/notices?includeExpired=true`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -48,7 +49,7 @@ const AdminNoticePanel = () => {
   // Fetch employees
   const fetchEmployees = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/admin/employees", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -82,7 +83,7 @@ const AdminNoticePanel = () => {
 
       console.log("Sending payload:", payload);
 
-      const res = await fetch("http://localhost:4000/api/notices/send", {
+      const res = await fetch(`${API_BASE_URL}/api/notices/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -151,7 +152,7 @@ const AdminNoticePanel = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:4000/api/notices/${editNotice._id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/notices/${editNotice._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -178,7 +179,7 @@ const AdminNoticePanel = () => {
   const handleDeleteNotice = async (noticeId) => {
     if (!window.confirm("Delete this notice?")) return;
     try {
-      const res = await fetch(`http://localhost:4000/api/notices/${noticeId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/notices/${noticeId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${user.token}` },
       });
@@ -196,7 +197,7 @@ const AdminNoticePanel = () => {
     const text = (noticeMessageDrafts[noticeId] || "").trim();
     if (!text) return;
     try {
-      const res = await fetch(`http://localhost:4000/api/notices/${noticeId}/message`, {
+      const res = await fetch(`${API_BASE_URL}/api/notices/${noticeId}/message`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

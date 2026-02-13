@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { API_BASE_URL } from "../../config/api";
 
-const API_BASE = "http://localhost:4000";
+const API_BASE = `${API_BASE_URL}`;
 
 const resolveRecordingUrl = (rawUrl) => {
   if (!rawUrl) return "";

@@ -1,4 +1,5 @@
-const API = "http://localhost:4000/api/tasks";
+import { API_BASE_URL } from "../config/api";
+const API = `${API_BASE_URL}/api/tasks`;
 
 export const approveTask = async (taskId, token) => {
   const res = await fetch(`${API}/${taskId}/verify`, {

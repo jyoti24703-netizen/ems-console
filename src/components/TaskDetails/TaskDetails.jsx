@@ -4,13 +4,14 @@ import { AuthContext } from "../../context/AuthProvider";
 import TaskEditModal from "../Admin/TaskEditModal";
 import TaskDeleteModal from "../Admin/TaskDeleteModal";
 import RequestModificationModal from "../Admin/RequestModificationModal";
+import { API_BASE_URL } from "../../config/api";
 
-const API_BASE = "http://localhost:4000/api/tasks";
+const API_BASE = `${API_BASE_URL}/api/tasks`;
 const toAbsoluteFileUrl = (url) => {
   if (!url) return "";
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
-  if (url.startsWith("/")) return `http://localhost:4000${url}`;
-  return `http://localhost:4000/${url.replace(/^\/+/, "")}`;
+  if (url.startsWith("/")) return `${API_BASE_URL}${url}`;
+  return `${API_BASE_URL}/${url.replace(/^\/+/, "")}`;
 };
 
 const TaskDetails = () => {

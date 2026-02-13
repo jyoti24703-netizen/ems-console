@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { API_BASE_URL } from "../../config/api";
 
 const failureTypes = [
   { value: "quality_not_met", label: "Quality Not Met" },
@@ -13,8 +14,8 @@ const failureTypes = [
 const toAbsoluteUrl = (url) => {
   if (!url) return "";
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
-  if (url.startsWith("/")) return `http://localhost:4000${url}`;
-  return `http://localhost:4000/${url.replace(/^\/+/, "")}`;
+  if (url.startsWith("/")) return `${API_BASE_URL}${url}`;
+  return `${API_BASE_URL}/${url.replace(/^\/+/, "")}`;
 };
 
 const TaskReviewActions = ({ task, token, onUpdated, canManageReviews = true, canManageTasks = true }) => {
@@ -73,7 +74,7 @@ const TaskReviewActions = ({ task, token, onUpdated, canManageReviews = true, ca
     }
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:4000/api/tasks/${task._id}/verify`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${task._id}/verify`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -89,7 +90,7 @@ const TaskReviewActions = ({ task, token, onUpdated, canManageReviews = true, ca
           alert("Archive note must be at least 5 characters");
         } else {
           const archiveRes = await fetch(
-            `http://localhost:4000/api/tasks/${task._id}/archive`,
+            `${API_BASE_URL}/api/tasks/${task._id}/archive`,
             {
               method: "PATCH",
               headers: {
@@ -126,7 +127,7 @@ const TaskReviewActions = ({ task, token, onUpdated, canManageReviews = true, ca
     }
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:4000/api/tasks/${task._id}/fail`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${task._id}/fail`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -159,7 +160,7 @@ const TaskReviewActions = ({ task, token, onUpdated, canManageReviews = true, ca
     }
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:4000/api/tasks/${task._id}/reopen`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${task._id}/reopen`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -189,7 +190,7 @@ const TaskReviewActions = ({ task, token, onUpdated, canManageReviews = true, ca
     }
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:4000/api/tasks/${task._id}/archive`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${task._id}/archive`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

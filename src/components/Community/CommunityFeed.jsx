@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext, useMemo } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import PollCreator from "./PollCreator";
+import { API_BASE_URL } from "../../config/api";
 
-const API_ORIGIN = "http://localhost:4000";
+const API_ORIGIN = `${API_BASE_URL}`;
 
 const CommunityFeed = () => {
   const { user } = useContext(AuthContext);
@@ -128,7 +129,7 @@ const CommunityFeed = () => {
     }
     try {
       const ts = Date.now();
-      const res = await fetch(`http://localhost:4000/api/community/feed?ts=${ts}`, {
+      const res = await fetch(`${API_BASE_URL}/api/community/feed?ts=${ts}`, {
         headers: { Authorization: `Bearer ${user.token}` },
         cache: "no-store"
       });
@@ -164,7 +165,7 @@ const CommunityFeed = () => {
     }
     try {
       const ts = Date.now();
-      const res = await fetch(`http://localhost:4000/api/community/users?ts=${ts}`, {
+      const res = await fetch(`${API_BASE_URL}/api/community/users?ts=${ts}`, {
         headers: { Authorization: `Bearer ${user.token}` },
         cache: "no-store"
       });
@@ -244,7 +245,7 @@ const CommunityFeed = () => {
   const handleDeletePost = async (postId) => {
     if (!window.confirm("Delete this post?")) return;
     try {
-      const res = await fetch(`http://localhost:4000/api/community/post/${postId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/community/post/${postId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -273,7 +274,7 @@ const CommunityFeed = () => {
         formData.append("images", image);
       });
 
-      const res = await fetch("http://localhost:4000/api/community/post", {
+      const res = await fetch(`${API_BASE_URL}/api/community/post`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -325,7 +326,7 @@ const CommunityFeed = () => {
         }
       }
 
-      const res = await fetch("http://localhost:4000/api/community/post", {
+      const res = await fetch(`${API_BASE_URL}/api/community/post`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -351,7 +352,7 @@ const CommunityFeed = () => {
   // Like post
   const handleLikePost = async (postId) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/community/post/${postId}/like`, {
+      const res = await fetch(`${API_BASE_URL}/api/community/post/${postId}/like`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -372,7 +373,7 @@ const CommunityFeed = () => {
     if (!text || text.trim().length === 0) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/api/community/post/${postId}/comment`, {
+      const res = await fetch(`${API_BASE_URL}/api/community/post/${postId}/comment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -393,7 +394,7 @@ const CommunityFeed = () => {
   // Vote on poll
   const handleVote = async (postId, optionIndex) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/community/post/${postId}/vote`, {
+      const res = await fetch(`${API_BASE_URL}/api/community/post/${postId}/vote`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

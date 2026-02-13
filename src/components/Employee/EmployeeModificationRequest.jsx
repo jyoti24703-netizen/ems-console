@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
+import { API_BASE_URL } from "../../config/api";
 
 const EmployeeModificationRequest = ({ task, onResponseSubmitted }) => {
   const { user } = useContext(AuthContext);
@@ -62,7 +63,7 @@ const EmployeeModificationRequest = ({ task, onResponseSubmitted }) => {
     if (!request || request.employeeViewedAt) return;
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${task._id}/modification-request/${request._id}/viewed`,
+        `${API_BASE_URL}/api/tasks/${task._id}/modification-request/${request._id}/viewed`,
         {
           method: "PATCH",
           headers: {
@@ -100,7 +101,7 @@ const EmployeeModificationRequest = ({ task, onResponseSubmitted }) => {
     setSendingMessage(true);
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${task._id}/modification-request/${selectedRequest._id}/message`,
+        `${API_BASE_URL}/api/tasks/${task._id}/modification-request/${selectedRequest._id}/message`,
         {
           method: "POST",
           headers: {
@@ -133,7 +134,7 @@ const EmployeeModificationRequest = ({ task, onResponseSubmitted }) => {
     setSubmittingResponse(true);
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${task._id}/modification-request/${selectedRequest._id}/respond`,
+        `${API_BASE_URL}/api/tasks/${task._id}/modification-request/${selectedRequest._id}/respond`,
         {
           method: "PATCH",
           headers: {
@@ -176,7 +177,7 @@ const EmployeeModificationRequest = ({ task, onResponseSubmitted }) => {
     setSubmittingResponse(true);
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${task._id}/modification-request/${selectedRequest._id}/respond`,
+        `${API_BASE_URL}/api/tasks/${task._id}/modification-request/${selectedRequest._id}/respond`,
         {
           method: "PATCH",
           headers: {

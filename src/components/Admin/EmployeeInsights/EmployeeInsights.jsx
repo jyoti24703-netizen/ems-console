@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthProvider";
 import EmployeeSearch from "./EmployeeSearch";
 import EmployeeInsightView from "./EmployeeInsightView";
+import { API_BASE_URL } from "../../../config/api";
 
 const EmployeeInsights = () => {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -65,7 +66,7 @@ const EmployeeInsights = () => {
         if (!token) throw new Error("Unauthorized");
 
         const res = await fetch(
-          `http://localhost:4000/api/admin/employee-insights/${employeeId}`,
+          `${API_BASE_URL}/api/admin/employee-insights/${employeeId}`,
           {
             cache: "no-store",
             headers: {

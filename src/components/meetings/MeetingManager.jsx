@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import MeetingAnalytics from "./MeetingAnalytics";
 import MeetingTemplates from "./MeetingTemplates";
+import { API_BASE_URL } from "../../config/api";
 
 const MeetingManager = () => {
   const { user } = useContext(AuthContext);
@@ -23,8 +24,8 @@ const MeetingManager = () => {
   const toAbsoluteAssetUrl = (url) => {
     if (!url) return "";
     if (url.startsWith("http://") || url.startsWith("https://")) return url;
-    if (url.startsWith("/")) return `http://localhost:4000${url}`;
-    return `http://localhost:4000/${url.replace(/^\/+/, "")}`;
+    if (url.startsWith("/")) return `${API_BASE_URL}${url}`;
+    return `${API_BASE_URL}/${url.replace(/^\/+/, "")}`;
   };
   const [newNote, setNewNote] = useState("");
   const [newActionItem, setNewActionItem] = useState({
@@ -106,10 +107,10 @@ const MeetingManager = () => {
       if (type === "templates") return;
       if (type === "analytics") {
         const [upcomingRes, pastRes] = await Promise.all([
-          fetch("http://localhost:4000/api/meetings/upcoming", {
+          fetch(`${API_BASE_URL}/api/meetings/upcoming`, {
             headers: { Authorization: `Bearer ${user.token}` },
           }),
-          fetch("http://localhost:4000/api/meetings/past", {
+          fetch(`${API_BASE_URL}/api/meetings/past`, {
             headers: { Authorization: `Bearer ${user.token}` },
           })
         ]);
@@ -130,7 +131,7 @@ const MeetingManager = () => {
       }
 
       const endpoint = type === "upcoming" ? "/upcoming" : "/past";
-      const res = await fetch(`http://localhost:4000/api/meetings${endpoint}`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings${endpoint}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -147,7 +148,7 @@ const MeetingManager = () => {
   // Fetch employees - FIXED VERSION
   const fetchEmployees = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/admin/employees", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -161,7 +162,7 @@ const MeetingManager = () => {
   // Fetch discussion
   const fetchDiscussion = async (meetingId) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/meetings/${meetingId}/discussion`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/${meetingId}/discussion`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -176,7 +177,7 @@ const MeetingManager = () => {
   // Fetch full meeting details
   const fetchMeetingDetails = async (meetingId) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/meetings/details/${meetingId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/details/${meetingId}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -261,7 +262,7 @@ const MeetingManager = () => {
       console.log("📤 PAYLOAD BEING SENT TO BACKEND:", payload);
       console.log("🔑 User token (first 20 chars):", user.token?.substring(0, 20));
 
-      const res = await fetch("http://localhost:4000/api/meetings/create", {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -309,7 +310,7 @@ const MeetingManager = () => {
     if (!reason) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/api/meetings/${meetingId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/${meetingId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -335,7 +336,7 @@ const MeetingManager = () => {
         return;
       }
 
-      const res = await fetch(`http://localhost:4000/api/meetings/${selectedMeeting._id}/reschedule`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/${selectedMeeting._id}/reschedule`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -371,7 +372,7 @@ const MeetingManager = () => {
     if (!newMessage.trim()) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/api/meetings/${meetingId}/message`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/${meetingId}/message`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -396,7 +397,7 @@ const MeetingManager = () => {
     if (!newNote.trim()) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/api/meetings/${selectedMeeting._id}/notes`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/${selectedMeeting._id}/notes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -437,7 +438,7 @@ const MeetingManager = () => {
         formData.append("resourceFile", newActionItem.resourceFile);
       }
 
-      const res = await fetch(`http://localhost:4000/api/meetings/${selectedMeeting._id}/action-items`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/${selectedMeeting._id}/action-items`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -517,7 +518,7 @@ const MeetingManager = () => {
         formData.append("recordingFile", newRecording.recordingFile);
       }
 
-      const res = await fetch(`http://localhost:4000/api/meetings/${selectedMeeting._id}/recording`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/${selectedMeeting._id}/recording`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -541,7 +542,7 @@ const MeetingManager = () => {
   // Mark attendance
   const handleMarkAttendance = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/api/meetings/${selectedMeeting._id}/attendance`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/${selectedMeeting._id}/attendance`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -576,7 +577,7 @@ const MeetingManager = () => {
         }
       }
 
-      const res = await fetch(`http://localhost:4000/api/meetings/${meetingId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/${meetingId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

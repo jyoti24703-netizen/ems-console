@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
+import { API_BASE_URL } from "../../config/api";
 
 const Login = () => {
   const [mode, setMode] = useState("login");
@@ -22,7 +23,7 @@ const Login = () => {
   useEffect(() => {
     const checkSetupStatus = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/auth/setup-status");
+        const res = await fetch(`${API_BASE_URL}/api/auth/setup-status`);
         const data = await res.json();
         const needsSetup = Boolean(data?.requiresAdminSetup);
         setRequiresAdminSetup(needsSetup);
@@ -47,7 +48,7 @@ const Login = () => {
     setSubmitting(true);
 
     try {
-      const res = await fetch("http://localhost:4000/api/auth/login", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -105,7 +106,7 @@ const Login = () => {
     setSubmitting(true);
 
     try {
-      const res = await fetch("http://localhost:4000/api/auth/register", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
+import { API_BASE_URL } from "../../config/api";
 
 const EmployeeManagement = ({ statusFilter = "all", defaultTab = "register" }) => {
   const { user } = useContext(AuthContext);
@@ -26,7 +27,7 @@ const EmployeeManagement = ({ statusFilter = "all", defaultTab = "register" }) =
   /* ================= FETCH ALL DATA ================= */
   const fetchEmployees = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/admin/employees", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees`, {
         cache: "no-store",
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -42,7 +43,7 @@ const EmployeeManagement = ({ statusFilter = "all", defaultTab = "register" }) =
   // ADDED: Fetch all tasks once
   const fetchAllTasks = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/tasks", {
+      const res = await fetch(`${API_BASE_URL}/api/tasks`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -214,7 +215,7 @@ const EmployeeManagement = ({ statusFilter = "all", defaultTab = "register" }) =
         return;
       }
 
-      const res = await fetch("http://localhost:4000/api/admin/employees", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -237,7 +238,7 @@ const EmployeeManagement = ({ statusFilter = "all", defaultTab = "register" }) =
   /* ================= TOGGLE STATUS ================= */
   const toggleStatus = async (id) => {
     await fetch(
-      `http://localhost:4000/api/admin/employees/${id}/toggle`,
+      `${API_BASE_URL}/api/admin/employees/${id}/toggle`,
       {
         method: "PATCH",
         headers: {
@@ -254,7 +255,7 @@ const EmployeeManagement = ({ statusFilter = "all", defaultTab = "register" }) =
       return;
 
     await fetch(
-      `http://localhost:4000/api/admin/employees/${id}`,
+      `${API_BASE_URL}/api/admin/employees/${id}`,
       {
         method: "DELETE",
         headers: {

@@ -1,4 +1,5 @@
-const API_BASE = "http://localhost:4000/api/tasks";
+import { API_BASE_URL } from "../config/api";
+const API_BASE = `${API_BASE_URL}/api/tasks`;
 
 const getToken = () => {
   const user = JSON.parse(localStorage.getItem("user"));

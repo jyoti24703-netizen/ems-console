@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
+import { API_BASE_URL } from "../../config/api";
 
-const API_BASE = "http://localhost:4000/api/tasks";
+const API_BASE = `${API_BASE_URL}/api/tasks`;
 
 const WORK_ACTIONS_EXCLUDE = new Set([
   "COMMENT_ADDED",

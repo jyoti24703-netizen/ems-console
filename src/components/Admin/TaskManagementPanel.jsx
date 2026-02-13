@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 ﻿import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
@@ -66,7 +67,7 @@ const TaskManagementPanel = ({ view = "all", openEditFromModRequest }) => {
   // Fetch tasks
   const fetchTasks = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/tasks", {
+      const res = await fetch(`${API_BASE_URL}/api/tasks`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -82,7 +83,7 @@ const TaskManagementPanel = ({ view = "all", openEditFromModRequest }) => {
 
   const fetchEmployees = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/admin/employees", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -295,7 +296,7 @@ const TaskManagementPanel = ({ view = "all", openEditFromModRequest }) => {
     }
 
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${selectedTask._id}/direct-edit`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${selectedTask._id}/direct-edit`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -340,7 +341,7 @@ const TaskManagementPanel = ({ view = "all", openEditFromModRequest }) => {
     }
 
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${selectedTask._id}/direct-delete`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${selectedTask._id}/direct-delete`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -394,7 +395,7 @@ const TaskManagementPanel = ({ view = "all", openEditFromModRequest }) => {
     }
 
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${selectedTask._id}/request-modification`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${selectedTask._id}/request-modification`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -440,8 +441,8 @@ const TaskManagementPanel = ({ view = "all", openEditFromModRequest }) => {
     try {
       const isExecute = extensionExecution?.mode === "execute";
       const url = isExecute
-        ? `http://localhost:4000/api/tasks/${selectedTask._id}/extend-due`
-        : `http://localhost:4000/api/tasks/${selectedTask._id}/request-extension`;
+        ? `${API_BASE_URL}/api/tasks/${selectedTask._id}/extend-due`
+        : `${API_BASE_URL}/api/tasks/${selectedTask._id}/request-extension`;
       const method = isExecute ? "PATCH" : "POST";
 
       const res = await fetch(url, {
@@ -487,7 +488,7 @@ const TaskManagementPanel = ({ view = "all", openEditFromModRequest }) => {
     }
 
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${selectedTask._id}/reopen`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${selectedTask._id}/reopen`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -528,7 +529,7 @@ const TaskManagementPanel = ({ view = "all", openEditFromModRequest }) => {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${selectedTask._id}/reassign`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${selectedTask._id}/reassign`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -565,7 +566,7 @@ const TaskManagementPanel = ({ view = "all", openEditFromModRequest }) => {
     setEditSubmitting(true);
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${selectedTask._id}/approve-modification-request/${modExecution.requestId}`,
+        `${API_BASE_URL}/api/tasks/${selectedTask._id}/approve-modification-request/${modExecution.requestId}`,
         {
           method: "POST",
           headers: {
@@ -638,7 +639,7 @@ const TaskManagementPanel = ({ view = "all", openEditFromModRequest }) => {
       }
 
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${selectedTask._id}/execute-employee-modification/${modExecution.requestId}`,
+        `${API_BASE_URL}/api/tasks/${selectedTask._id}/execute-employee-modification/${modExecution.requestId}`,
         {
           method: "POST",
           headers: {

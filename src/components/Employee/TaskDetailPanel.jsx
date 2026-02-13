@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import EmployeeModificationRequest from "./EmployeeModificationRequest";
+import { API_BASE_URL } from "../../config/api";
 
 const TaskDetailPanel = ({ task, token, onTaskRefresh }) => {
   const { user } = useContext(AuthContext);
@@ -9,7 +10,7 @@ const TaskDetailPanel = ({ task, token, onTaskRefresh }) => {
 
   const fetchMessages = async () => {
     const res = await fetch(
-      `http://localhost:4000/api/tasks/${task._id}/messages`,
+      `${API_BASE_URL}/api/tasks/${task._id}/messages`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -26,7 +27,7 @@ const TaskDetailPanel = ({ task, token, onTaskRefresh }) => {
     if (!text.trim()) return;
 
     await fetch(
-      `http://localhost:4000/api/tasks/${task._id}/message`,
+      `${API_BASE_URL}/api/tasks/${task._id}/message`,
       {
         method: "POST",
         headers: {

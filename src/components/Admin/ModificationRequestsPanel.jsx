@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
+import { API_BASE_URL } from "../../config/api";
 
 const ModificationRequestsPanel = () => {
   const { user } = useContext(AuthContext);
@@ -63,7 +64,7 @@ const ModificationRequestsPanel = () => {
         status: "all",
         origin: "all"
       });
-      const res = await fetch(`http://localhost:4000/api/tasks/modification-requests/pending?${params.toString()}`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/modification-requests/pending?${params.toString()}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -205,7 +206,7 @@ const ModificationRequestsPanel = () => {
 
     setSendingMessage(true);
     try {
-      const url = `http://localhost:4000/api/tasks/${selectedRequest.task._id}/modification-request/${selectedRequest.request._id}/message`;
+      const url = `${API_BASE_URL}/api/tasks/${selectedRequest.task._id}/modification-request/${selectedRequest.request._id}/message`;
       console.log(" Sending message to:", url);
       console.log("Message:", newMessage);
 
@@ -275,7 +276,7 @@ const ModificationRequestsPanel = () => {
     setActionInProgress(true);
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${selectedRequest.task._id}/approve-modification-request/${selectedRequest.request._id}`,
+        `${API_BASE_URL}/api/tasks/${selectedRequest.task._id}/approve-modification-request/${selectedRequest.request._id}`,
         {
           method: "POST",
           headers: {
@@ -315,7 +316,7 @@ const ModificationRequestsPanel = () => {
     setActionInProgress(true);
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${selectedRequest.task._id}/approve-employee-modification/${selectedRequest.request._id}`,
+        `${API_BASE_URL}/api/tasks/${selectedRequest.task._id}/approve-employee-modification/${selectedRequest.request._id}`,
         {
           method: "POST",
           headers: {
@@ -362,7 +363,7 @@ const ModificationRequestsPanel = () => {
     setActionInProgress(true);
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${selectedRequest.task._id}/reject-employee-modification/${selectedRequest.request._id}`,
+        `${API_BASE_URL}/api/tasks/${selectedRequest.task._id}/reject-employee-modification/${selectedRequest.request._id}`,
         {
           method: "POST",
           headers: {

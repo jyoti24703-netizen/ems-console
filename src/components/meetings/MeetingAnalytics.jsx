@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useMemo } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import {
+import { API_BASE_URL } from "../../config/api";
   BarChart,
   Bar,
   XAxis,
@@ -35,7 +36,7 @@ const MeetingAnalytics = ({ meetingId, timeRange = "month", meetingsData = [] })
 
   const fetchMeetingAnalytics = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/api/meetings/${meetingId}/analytics`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/${meetingId}/analytics`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       const data = await res.json();
@@ -51,7 +52,7 @@ const MeetingAnalytics = ({ meetingId, timeRange = "month", meetingsData = [] })
 
   const fetchUserAnalytics = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/api/meetings/user/stats?period=${timeRange}`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/user/stats?period=${timeRange}`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       const data = await res.json();

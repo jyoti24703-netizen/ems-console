@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 ﻿import { useEffect, useState, useContext, useRef, useMemo } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import TaskDiscussion from "../Shared/TaskDiscussion";
@@ -123,7 +124,7 @@ const EmployeeDashboard = () => {
 
   /* ================= FETCH TASKS ================= */
   const fetchTasks = async () => {
-    const res = await fetchWithRetry("http://localhost:4000/api/tasks/my", {
+    const res = await fetchWithRetry(`${API_BASE_URL}/api/tasks/my`, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
     const data = await res.json();
@@ -133,7 +134,7 @@ const EmployeeDashboard = () => {
 
   const fetchEmployeeLiveCounters = async () => {
     try {
-      const res = await fetchWithRetry("http://localhost:4000/api/tasks/employee/live-counters", {
+      const res = await fetchWithRetry(`${API_BASE_URL}/api/tasks/employee/live-counters`, {
         headers: { Authorization: `Bearer ${authToken}` }
       });
       const data = await res.json();
@@ -157,7 +158,7 @@ const EmployeeDashboard = () => {
         origin: "all"
       });
       if (requestSearch.trim()) params.set("search", requestSearch.trim());
-      const res = await fetchWithRetry(`http://localhost:4000/api/tasks/modification-requests/pending?${params.toString()}`, {
+      const res = await fetchWithRetry(`${API_BASE_URL}/api/tasks/modification-requests/pending?${params.toString()}`, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       const data = await res.json();
@@ -1181,7 +1182,7 @@ const EmployeeDashboard = () => {
   /* ================= BACKEND ACTIONS ================= */
   const acceptTask = async () => {
     await fetch(
-      `http://localhost:4000/api/tasks/${selectedTask._id}/accept`,
+      `${API_BASE_URL}/api/tasks/${selectedTask._id}/accept`,
       {
         method: "PATCH",
         headers: { Authorization: `Bearer ${authToken}` },
@@ -1199,7 +1200,7 @@ const EmployeeDashboard = () => {
     }
 
     await fetch(
-      `http://localhost:4000/api/tasks/${selectedTask._id}/decline`,
+      `${API_BASE_URL}/api/tasks/${selectedTask._id}/decline`,
       {
         method: "PATCH",
         headers: {
@@ -1220,7 +1221,7 @@ const EmployeeDashboard = () => {
     if (!selectedTask?._id) return;
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${selectedTask._id}/start`,
+        `${API_BASE_URL}/api/tasks/${selectedTask._id}/start`,
         {
           method: "PATCH",
           headers: { Authorization: `Bearer ${authToken}` },
@@ -1232,7 +1233,7 @@ const EmployeeDashboard = () => {
         return;
       }
 
-      const refreshRes = await fetch(`http://localhost:4000/api/tasks/${selectedTask._id}`, {
+      const refreshRes = await fetch(`${API_BASE_URL}/api/tasks/${selectedTask._id}`, {
         headers: { Authorization: `Bearer ${authToken}` }
       });
       const refreshData = await refreshRes.json();
@@ -1262,7 +1263,7 @@ const EmployeeDashboard = () => {
       workFiles.forEach((file) => formData.append("workFiles", file));
 
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${selectedTask._id}/complete`,
+        `${API_BASE_URL}/api/tasks/${selectedTask._id}/complete`,
         {
           method: "PATCH",
           headers: {
@@ -1297,7 +1298,7 @@ const EmployeeDashboard = () => {
     }
 
     await fetch(
-      `http://localhost:4000/api/tasks/${selectedTask._id}/withdraw`,
+      `${API_BASE_URL}/api/tasks/${selectedTask._id}/withdraw`,
       {
         method: "PATCH",
         headers: {
@@ -1325,7 +1326,7 @@ const EmployeeDashboard = () => {
     }
 
     const res = await fetch(
-      `http://localhost:4000/api/tasks/${selectedTask._id}/request-extension`,
+      `${API_BASE_URL}/api/tasks/${selectedTask._id}/request-extension`,
       {
         method: "POST",
         headers: {
@@ -1378,7 +1379,7 @@ const EmployeeDashboard = () => {
       }
 
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${selectedTask._id}/employee-request-modification`,
+        `${API_BASE_URL}/api/tasks/${selectedTask._id}/employee-request-modification`,
         {
           method: "POST",
           headers: {
@@ -1412,7 +1413,7 @@ const EmployeeDashboard = () => {
     if (modViewedIds[requestId]) return;
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${taskId}/modification-request/${requestId}/viewed`,
+        `${API_BASE_URL}/api/tasks/${taskId}/modification-request/${requestId}/viewed`,
         {
           method: "PATCH",
           headers: {
@@ -1442,7 +1443,7 @@ const EmployeeDashboard = () => {
     setModActionLoading(prev => ({ ...prev, [requestId]: true }));
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${taskId}/modification-request/${requestId}/respond`,
+        `${API_BASE_URL}/api/tasks/${taskId}/modification-request/${requestId}/respond`,
         {
           method: "PATCH",
           headers: {
@@ -1485,7 +1486,7 @@ const EmployeeDashboard = () => {
     setModSendLoadingById(prev => ({ ...prev, [requestId]: true }));
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${taskId}/modification-request/${requestId}/message`,
+        `${API_BASE_URL}/api/tasks/${taskId}/modification-request/${requestId}/message`,
         {
           method: "POST",
           headers: {
@@ -1517,7 +1518,7 @@ const EmployeeDashboard = () => {
 
   const markReopenViewed = async (taskId) => {
     try {
-      await fetch(`http://localhost:4000/api/tasks/${taskId}/reopen/viewed`, {
+      await fetch(`${API_BASE_URL}/api/tasks/${taskId}/reopen/viewed`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -1534,7 +1535,7 @@ const EmployeeDashboard = () => {
     const note = (reopenAcceptNotes[taskId] || "").trim();
     setReopenActionLoading(prev => ({ ...prev, [taskId]: true }));
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${taskId}/accept-reopen`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/accept-reopen`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -1565,7 +1566,7 @@ const EmployeeDashboard = () => {
     }
     setReopenActionLoading(prev => ({ ...prev, [taskId]: true }));
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${taskId}/decline-reopen`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/decline-reopen`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -1592,11 +1593,11 @@ const EmployeeDashboard = () => {
     try {
       const ts = Date.now();
       const [upcomingRes, pastRes] = await Promise.all([
-        fetch(`http://localhost:4000/api/meetings/upcoming?ts=${ts}`, {
+        fetch(`${API_BASE_URL}/api/meetings/upcoming?ts=${ts}`, {
           headers: { Authorization: `Bearer ${authToken}` },
           cache: "no-store"
         }),
-        fetch(`http://localhost:4000/api/meetings/past?ts=${ts}`, {
+        fetch(`${API_BASE_URL}/api/meetings/past?ts=${ts}`, {
           headers: { Authorization: `Bearer ${authToken}` },
           cache: "no-store"
         })
@@ -1667,7 +1668,7 @@ const EmployeeDashboard = () => {
   };
 
   const updateRsvp = async (meetingId, status) => {
-    await fetch(`http://localhost:4000/api/meetings/${meetingId}/rsvp`, {
+    await fetch(`${API_BASE_URL}/api/meetings/${meetingId}/rsvp`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${authToken}`,
@@ -1680,7 +1681,7 @@ const EmployeeDashboard = () => {
 
   const fetchMeetingDiscussion = async (meetingId) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/meetings/${meetingId}/discussion`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/${meetingId}/discussion`, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       const data = await res.json();
@@ -1705,7 +1706,7 @@ const EmployeeDashboard = () => {
     if (!text) return;
     setMeetingSendLoadingById(prev => ({ ...prev, [meetingId]: true }));
     try {
-      const res = await fetch(`http://localhost:4000/api/meetings/${meetingId}/message`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/${meetingId}/message`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -1746,7 +1747,7 @@ const EmployeeDashboard = () => {
         formData.append("submissionFile", payload.file);
       }
 
-      const res = await fetch(`http://localhost:4000/api/meetings/${meetingId}/action-items/${actionItemId}/submit`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/${meetingId}/action-items/${actionItemId}/submit`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -1773,7 +1774,7 @@ const EmployeeDashboard = () => {
     setNoticeExpand(prev => ({ ...prev, [id]: nextOpen }));
     if (nextOpen) {
       try {
-        await fetch(`http://localhost:4000/api/notices/${id}/read`, {
+        await fetch(`${API_BASE_URL}/api/notices/${id}/read`, {
           method: "PATCH",
           headers: { Authorization: `Bearer ${authToken}` },
         });
@@ -1788,7 +1789,7 @@ const EmployeeDashboard = () => {
     const text = noticeMessages[noticeId];
     if (!text || !text.trim()) return;
 
-    await fetch(`http://localhost:4000/api/notices/${noticeId}/message`, {
+    await fetch(`${API_BASE_URL}/api/notices/${noticeId}/message`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -1803,7 +1804,7 @@ const EmployeeDashboard = () => {
   const fetchNotices = async () => {
     setNoticesLoading(true);
     try {
-      const res = await fetch("http://localhost:4000/api/notices/my", {
+      const res = await fetch(`${API_BASE_URL}/api/notices/my`, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       const data = await res.json();
@@ -1819,7 +1820,7 @@ const EmployeeDashboard = () => {
 
   const fetchInAppNotifications = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/notifications?limit=50", {
+      const res = await fetch(`${API_BASE_URL}/api/notifications?limit=50`, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       const data = await res.json();
@@ -1834,7 +1835,7 @@ const EmployeeDashboard = () => {
   const fetchProfile = async () => {
     setProfileLoading(true);
     try {
-      const res = await fetch("http://localhost:4000/api/auth/me", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       const data = await res.json();
@@ -1857,7 +1858,7 @@ const EmployeeDashboard = () => {
     setReviewActionError("");
     setReviewActionLoading((prev) => ({ ...prev, acknowledge: true }));
     try {
-      const res = await fetch("http://localhost:4000/api/auth/performance-review/acknowledge", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/performance-review/acknowledge`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -1885,7 +1886,7 @@ const EmployeeDashboard = () => {
     setReviewActionError("");
     setReviewActionLoading((prev) => ({ ...prev, comment: true }));
     try {
-      const res = await fetch("http://localhost:4000/api/auth/performance-review/comment", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/performance-review/comment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -1912,7 +1913,7 @@ const EmployeeDashboard = () => {
     setReviewActionError("");
     setReviewActionLoading((prev) => ({ ...prev, hide: true }));
     try {
-      const res = await fetch("http://localhost:4000/api/auth/performance-review/hide", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/performance-review/hide`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -1938,7 +1939,7 @@ const EmployeeDashboard = () => {
     setSelfPerfLoading(true);
     try {
       const fetchByWindow = async (windowKey) => {
-        const res = await fetch(`http://localhost:4000/api/tasks/performance/self?timeframe=${windowKey}`, {
+        const res = await fetch(`${API_BASE_URL}/api/tasks/performance/self?timeframe=${windowKey}`, {
           headers: { Authorization: `Bearer ${authToken}` },
         });
         const data = await res.json();

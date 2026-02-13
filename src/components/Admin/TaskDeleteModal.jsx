@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { API_BASE_URL } from "../../config/api";
 
 const TaskDeleteModal = ({ task, user, onClose, onSuccess }) => {
   const [loading, setLoading] = useState(false);
@@ -15,7 +16,7 @@ const TaskDeleteModal = ({ task, user, onClose, onSuccess }) => {
     setError("");
 
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${task._id}/direct-delete`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${task._id}/direct-delete`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

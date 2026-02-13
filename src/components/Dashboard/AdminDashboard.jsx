@@ -16,12 +16,13 @@ import CommunityFeed from "../Community/CommunityFeed";
 import ChatbotWidget from "../Shared/ChatbotWidget";
 import SmartNotifications from "../Shared/SmartNotifications";
 import { fetchWithRetry } from "../../api/httpClient";
+import { API_BASE_URL } from "../../config/api";
 
 const toAbsoluteAssetUrl = (url) => {
   if (!url) return "";
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
-  if (url.startsWith("/")) return `http://localhost:4000${url}`;
-  return `http://localhost:4000/${url.replace(/^\/+/, "")}`;
+  if (url.startsWith("/")) return `${API_BASE_URL}${url}`;
+  return `${API_BASE_URL}/${url.replace(/^\/+/, "")}`;
 };
 
 const AdminDashboard = () => {
@@ -252,7 +253,7 @@ const AdminDashboard = () => {
           params.set("search", requestSearch.trim());
         }
 
-        const res = await fetch(`http://localhost:4000/api/tasks/modification-requests/pending?${params.toString()}`, {
+        const res = await fetch(`${API_BASE_URL}/api/tasks/modification-requests/pending?${params.toString()}`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         const data = await res.json();
@@ -309,7 +310,7 @@ const AdminDashboard = () => {
     try {
       markSyncStatus("tasks", "syncing");
       console.log(" Fetching tasks...");
-      const res = await fetchWithRetry("http://localhost:4000/api/tasks", {
+      const res = await fetchWithRetry(`${API_BASE_URL}/api/tasks`, {
         cache: "no-store",
         headers: { Authorization: `Bearer ${user.token}` },
       });
@@ -334,7 +335,7 @@ const AdminDashboard = () => {
     try {
       markSyncStatus("employees", "syncing");
       console.log(" Fetching employees...");
-      const res = await fetchWithRetry("http://localhost:4000/api/admin/employees", {
+      const res = await fetchWithRetry(`${API_BASE_URL}/api/admin/employees`, {
         cache: "no-store",
         headers: { Authorization: `Bearer ${user.token}` },
       });
@@ -354,11 +355,11 @@ const AdminDashboard = () => {
       markSyncStatus("meetings", "syncing");
       console.log(" Fetching meetings...");
       const [upcomingRes, pastRes] = await Promise.all([
-        fetchWithRetry("http://localhost:4000/api/meetings/upcoming", {
+        fetchWithRetry(`${API_BASE_URL}/api/meetings/upcoming`, {
           cache: "no-store",
           headers: { Authorization: `Bearer ${user.token}` },
         }),
-        fetchWithRetry("http://localhost:4000/api/meetings/past", {
+        fetchWithRetry(`${API_BASE_URL}/api/meetings/past`, {
           cache: "no-store",
           headers: { Authorization: `Bearer ${user.token}` },
         }),
@@ -409,7 +410,7 @@ const AdminDashboard = () => {
   const fetchFailureIntelligence = async () => {
     try {
       console.log(" Fetching failure intelligence...");
-      const res = await fetch("http://localhost:4000/api/tasks/intelligence/failures?timeframe=30", {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/intelligence/failures?timeframe=30`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -425,7 +426,7 @@ const AdminDashboard = () => {
   // Fetch Performance Data for Specific Employee
   const fetchPerformanceData = async (employeeId) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/performance/${employeeId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/performance/${employeeId}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -441,7 +442,7 @@ const AdminDashboard = () => {
   const fetchStatistics = async () => {
     try {
       console.log(" Fetching statistics...");
-      const res = await fetch("http://localhost:4000/api/tasks/statistics/overview", {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/statistics/overview`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -570,7 +571,7 @@ const AdminDashboard = () => {
           page: String(reviewQueuePage),
           limit: "20"
         });
-        const res = await fetchWithRetry(`http://localhost:4000/api/tasks/queue/review?${params.toString()}`, {
+        const res = await fetchWithRetry(`${API_BASE_URL}/api/tasks/queue/review?${params.toString()}`, {
           cache: "no-store",
           headers: { Authorization: `Bearer ${user.token}` }
         });
@@ -613,7 +614,7 @@ const AdminDashboard = () => {
 
     const fetchLiveSnapshot = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/admin/live-counters", {
+        const res = await fetch(`${API_BASE_URL}/api/admin/live-counters`, {
           headers: { Authorization: `Bearer ${user.token}` }
         });
         const data = await res.json();
@@ -627,7 +628,7 @@ const AdminDashboard = () => {
     };
 
     try {
-      const url = `http://localhost:4000/api/admin/live-counters/stream?token=${encodeURIComponent(user.token)}`;
+      const url = `${API_BASE_URL}/api/admin/live-counters/stream?token=${encodeURIComponent(user.token)}`;
       eventSource = new EventSource(url);
       setLiveConnectionState("connecting");
 
@@ -701,7 +702,7 @@ const AdminDashboard = () => {
           search: auditSearch.trim(),
           limit: "2000"
         });
-        const res = await fetch(`http://localhost:4000/api/admin/audit-log?${params.toString()}`, {
+        const res = await fetch(`${API_BASE_URL}/api/admin/audit-log?${params.toString()}`, {
           headers: { Authorization: `Bearer ${user.token}` },
           cache: "no-store"
         });
@@ -859,7 +860,7 @@ const AdminDashboard = () => {
         }
       }
 
-      const res = await fetch("http://localhost:4000/api/tasks/create", {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -1409,7 +1410,7 @@ const AdminDashboard = () => {
   const fetchNoticesAll = async () => {
     try {
       markSyncStatus("notices", "syncing");
-      const res = await fetch("http://localhost:4000/api/notices", {
+      const res = await fetch(`${API_BASE_URL}/api/notices`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -1430,7 +1431,7 @@ const AdminDashboard = () => {
   const fetchInAppNotifications = async () => {
     try {
       markSyncStatus("notifications", "syncing");
-      const res = await fetch("http://localhost:4000/api/notifications?limit=50", {
+      const res = await fetch(`${API_BASE_URL}/api/notifications?limit=50`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -2112,7 +2113,7 @@ const AdminDashboard = () => {
     try {
       setCapabilitiesLoading(true);
       setCapabilitiesError("");
-      const res = await fetch("http://localhost:4000/api/admin/capabilities", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/capabilities`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -2505,7 +2506,7 @@ const AdminDashboard = () => {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${taskId}/extend-due`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/extend-due`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -2575,7 +2576,7 @@ const AdminDashboard = () => {
     }
     if (!confirmByRisk("medium", "Reassign task ownership to another employee?")) return;
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${taskId}/reassign`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/reassign`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -2612,7 +2613,7 @@ const AdminDashboard = () => {
 
     setExtensionActionLoading(prev => ({ ...prev, [requestId]: true }));
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${taskId}/extension/${requestId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/extension/${requestId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -2662,7 +2663,7 @@ const AdminDashboard = () => {
     }
     if (!confirmByRisk("high", "Mark this task as failed?")) return;
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${taskId}/fail`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/fail`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -2696,7 +2697,7 @@ const AdminDashboard = () => {
     }
     if (!confirmByRisk("high", "Archive this task?")) return;
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${taskId}/archive`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/archive`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -2724,7 +2725,7 @@ const AdminDashboard = () => {
         alert("Reopen reason must be at least 5 characters");
         return;
       }
-      const res = await fetch(`http://localhost:4000/api/tasks/${taskId}/reopen`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/reopen`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${user.token}`,

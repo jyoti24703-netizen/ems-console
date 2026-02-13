@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 ﻿import React, { useState, useEffect, useContext, useMemo } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import {
@@ -82,7 +83,7 @@ const PerformanceSnapshot = () => {
     setEmployeesLoading(true);
     setEmployeesError("");
     try {
-      const res = await fetch("http://localhost:4000/api/admin/employees", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees`, {
         headers: { Authorization: `Bearer ${authToken}` },
         cache: "no-store"
       });
@@ -113,7 +114,7 @@ const PerformanceSnapshot = () => {
     setError("");
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/performance/${employeeId}?timeframe=${timeframeParam}`,
+        `${API_BASE_URL}/api/tasks/performance/${employeeId}?timeframe=${timeframeParam}`,
         {
           headers: { Authorization: `Bearer ${authToken}` },
           cache: "no-store"
@@ -149,23 +150,23 @@ const PerformanceSnapshot = () => {
     setExtrasLoading(true);
     try {
       const [upcomingRes, pastRes, noticesRes, tasksRes, communityRes] = await Promise.all([
-        fetch("http://localhost:4000/api/meetings/upcoming", {
+        fetch(`${API_BASE_URL}/api/meetings/upcoming`, {
           headers: { Authorization: `Bearer ${authToken}` },
           cache: "no-store"
         }),
-        fetch("http://localhost:4000/api/meetings/past", {
+        fetch(`${API_BASE_URL}/api/meetings/past`, {
           headers: { Authorization: `Bearer ${authToken}` },
           cache: "no-store"
         }),
-        fetch("http://localhost:4000/api/notices?includeExpired=true", {
+        fetch(`${API_BASE_URL}/api/notices?includeExpired=true`, {
           headers: { Authorization: `Bearer ${authToken}` },
           cache: "no-store"
         }),
-        fetch("http://localhost:4000/api/tasks", {
+        fetch(`${API_BASE_URL}/api/tasks`, {
           headers: { Authorization: `Bearer ${authToken}` },
           cache: "no-store"
         }),
-        fetch("http://localhost:4000/api/community/feed", {
+        fetch(`${API_BASE_URL}/api/community/feed`, {
           headers: { Authorization: `Bearer ${authToken}` },
           cache: "no-store"
         })
@@ -288,7 +289,7 @@ const PerformanceSnapshot = () => {
     }
     setReviewSaving(true);
     try {
-      const res = await fetch(`http://localhost:4000/api/admin/employees/${selectedEmployee._id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees/${selectedEmployee._id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -360,7 +361,7 @@ const PerformanceSnapshot = () => {
     if (!selectedEmployee?._id || !reviewId) return;
     setReviewActionLoadingId(reviewId);
     try {
-      const res = await fetch(`http://localhost:4000/api/admin/employees/${selectedEmployee._id}/performance-reviews/${reviewId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees/${selectedEmployee._id}/performance-reviews/${reviewId}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -405,7 +406,7 @@ const PerformanceSnapshot = () => {
     if (!window.confirm("Delete this review entry?")) return;
     setReviewActionLoadingId(reviewId);
     try {
-      const res = await fetch(`http://localhost:4000/api/admin/employees/${selectedEmployee._id}/performance-reviews/${reviewId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees/${selectedEmployee._id}/performance-reviews/${reviewId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${authToken}` }
       });
@@ -446,8 +447,8 @@ const PerformanceSnapshot = () => {
     try {
       const isLegacyReview = String(reviewId).startsWith("legacy-");
       const replyUrl = isLegacyReview
-        ? `http://localhost:4000/api/admin/employees/${selectedEmployee._id}/performance-review/comment`
-        : `http://localhost:4000/api/admin/employees/${selectedEmployee._id}/performance-reviews/${reviewId}/comment`;
+        ? `${API_BASE_URL}/api/admin/employees/${selectedEmployee._id}/performance-review/comment`
+        : `${API_BASE_URL}/api/admin/employees/${selectedEmployee._id}/performance-reviews/${reviewId}/comment`;
       const res = await fetch(replyUrl, {
         method: "POST",
         headers: {

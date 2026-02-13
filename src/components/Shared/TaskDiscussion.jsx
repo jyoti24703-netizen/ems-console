@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../../config/api";
 
 const TaskDiscussion = ({ taskId, token, role }) => {
   const [messages, setMessages] = useState([]);
@@ -7,7 +8,7 @@ const TaskDiscussion = ({ taskId, token, role }) => {
 
   const fetchMessages = async () => {
     const res = await fetch(
-      `http://localhost:4000/api/tasks/${taskId}/messages`,
+      `${API_BASE_URL}/api/tasks/${taskId}/messages`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -25,7 +26,7 @@ const TaskDiscussion = ({ taskId, token, role }) => {
     if (!text.trim()) return;
 
     await fetch(
-      `http://localhost:4000/api/tasks/${taskId}/message`,
+      `${API_BASE_URL}/api/tasks/${taskId}/message`,
       {
         method: "POST",
         headers: {

@@ -1,6 +1,7 @@
 // src/components/Admin/TaskOversightPanel.jsx
 import React, { useState, useEffect, useContext, useMemo } from "react";
 import { AuthContext } from "../../context/AuthProvider";
+import { API_BASE_URL } from "../../config/api";
 
 const TaskOversightPanel = () => {
   const { user } = useContext(AuthContext);
@@ -44,7 +45,7 @@ const TaskOversightPanel = () => {
   const fetchTasks = async () => {
     try {
       console.log("🔍 Fetching tasks from /api/tasks");
-      const res = await fetch("http://localhost:4000/api/tasks", {
+      const res = await fetch(`${API_BASE_URL}/api/tasks`, {
         headers: { 
           "Authorization": `Bearer ${user.token}`,
           "Content-Type": "application/json"
@@ -124,7 +125,7 @@ const TaskOversightPanel = () => {
   const fetchEmployees = async () => {
     try {
       console.log("👥 Fetching employees...");
-      const res = await fetch("http://localhost:4000/api/admin/employees", {
+      const res = await fetch(`${API_BASE_URL}/api/admin/employees`, {
         headers: { 
           "Authorization": `Bearer ${user.token}`,
           "Content-Type": "application/json"
@@ -186,7 +187,7 @@ const TaskOversightPanel = () => {
 
   const fetchTaskDiscussion = async (taskId) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${taskId}/messages`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}/messages`, {
         headers: { 
           "Authorization": `Bearer ${user.token}`,
           "Content-Type": "application/json"
@@ -210,7 +211,7 @@ const TaskOversightPanel = () => {
   const fetchSingleTask = async (taskId) => {
     try {
       console.log(`🔍 Fetching single task ${taskId}`);
-      const res = await fetch(`http://localhost:4000/api/tasks/${taskId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${taskId}`, {
         headers: { 
           "Authorization": `Bearer ${user.token}`,
           "Content-Type": "application/json"
@@ -648,7 +649,7 @@ const TaskOversightPanel = () => {
     
     setActionLoading(true);
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${selectedTask._id}/message`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${selectedTask._id}/message`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -692,7 +693,7 @@ const TaskOversightPanel = () => {
     
     setActionLoading(true);
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${selectedTask._id}/verify`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${selectedTask._id}/verify`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -740,7 +741,7 @@ const TaskOversightPanel = () => {
     
     setActionLoading(true);
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${selectedTask._id}/fail`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${selectedTask._id}/fail`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -787,7 +788,7 @@ const TaskOversightPanel = () => {
     
     setActionLoading(true);
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${selectedTask._id}/accept-reopen-decline`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${selectedTask._id}/accept-reopen-decline`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -827,7 +828,7 @@ const TaskOversightPanel = () => {
     
     setActionLoading(true);
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${selectedTask._id}/reopen`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${selectedTask._id}/reopen`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -1345,7 +1346,7 @@ const TaskOversightPanel = () => {
     setActionLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${taskId}/approve-employee-modification/${requestId}`,
+        `${API_BASE_URL}/api/tasks/${taskId}/approve-employee-modification/${requestId}`,
         {
           method: "POST",
           headers: {
@@ -1382,7 +1383,7 @@ const TaskOversightPanel = () => {
     setActionLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${taskId}/reject-employee-modification/${requestId}`,
+        `${API_BASE_URL}/api/tasks/${taskId}/reject-employee-modification/${requestId}`,
         {
           method: "POST",
           headers: {

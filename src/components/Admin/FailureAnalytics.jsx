@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useMemo } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import {
+import { API_BASE_URL } from "../../config/api";
   PieChart,
   Pie,
   Cell,
@@ -30,7 +31,7 @@ const FailureAnalytics = () => {
     setError("");
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/intelligence/failures?timeframe=${days}`,
+        `${API_BASE_URL}/api/tasks/intelligence/failures?timeframe=${days}`,
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
@@ -62,7 +63,7 @@ const FailureAnalytics = () => {
 
   const fetchSystemSignals = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/tasks", {
+      const res = await fetch(`${API_BASE_URL}/api/tasks`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../../../config/api";
 
 const EmployeeSearch = ({ onSelect }) => {
   const [employees, setEmployees] = useState([]);
@@ -15,7 +16,7 @@ const EmployeeSearch = ({ onSelect }) => {
         if (!token) throw new Error("Unauthorized");
 
         const res = await fetch(
-          "http://localhost:4000/api/admin/employees",
+          `${API_BASE_URL}/api/admin/employees`,
           {
             cache: "no-store",
             headers: {

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { API_BASE_URL } from "../../config/api";
 
 const RequestModificationModal = ({ task, user, onClose, onSuccess }) => {
   const [loading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ const RequestModificationModal = ({ task, user, onClose, onSuccess }) => {
     setError("");
 
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${task._id}/request-modification`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${task._id}/request-modification`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

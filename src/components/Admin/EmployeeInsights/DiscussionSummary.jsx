@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../../../config/api";
 
 const DiscussionSummary = ({ task }) => {
   const [discussion, setDiscussion] = useState([]);
@@ -9,7 +10,7 @@ const DiscussionSummary = ({ task }) => {
 
     setLoading(true);
 
-    fetch(`http://localhost:4000/api/tasks/${task._id}/messages`, {
+    fetch(`${API_BASE_URL}/api/tasks/${task._id}/messages`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

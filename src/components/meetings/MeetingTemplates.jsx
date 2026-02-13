@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider";
+import { API_BASE_URL } from "../../config/api";
 
 const MeetingTemplates = ({ onSelectTemplate }) => {
   const { user } = useContext(AuthContext);
@@ -23,7 +24,7 @@ const MeetingTemplates = ({ onSelectTemplate }) => {
 
   const fetchTemplates = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/meetings/templates", {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/templates`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const data = await res.json();
@@ -39,7 +40,7 @@ const MeetingTemplates = ({ onSelectTemplate }) => {
 
   const handleCreateTemplate = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/meetings/templates", {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/templates`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +77,7 @@ const MeetingTemplates = ({ onSelectTemplate }) => {
     if (!window.confirm("Are you sure you want to delete this template?")) return;
 
     try {
-      const res = await fetch(`http://localhost:4000/api/meetings/templates/${templateId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/meetings/templates/${templateId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${user.token}` },
       });

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_BASE_URL } from "../../config/api";
 
 export default function TaskEditModal({ task, user, onClose, onSuccess }) {
   const [loading, setLoading] = useState(false);
@@ -35,7 +36,7 @@ export default function TaskEditModal({ task, user, onClose, onSuccess }) {
 
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:4000/api/tasks/${task._id}/direct-edit`, {
+      const res = await fetch(`${API_BASE_URL}/api/tasks/${task._id}/direct-edit`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

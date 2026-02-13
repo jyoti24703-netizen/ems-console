@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import TaskDetailPanel from "./TaskDetailPanel";
+import { API_BASE_URL } from "../../config/api";
 
 const EmployeeTaskPage = () => {
   const { id } = useParams();
@@ -15,7 +16,7 @@ const EmployeeTaskPage = () => {
   const fetchTask = async () => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/tasks/${id}`,
+        `${API_BASE_URL}/api/tasks/${id}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
