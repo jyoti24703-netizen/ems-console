@@ -40,26 +40,46 @@ const MOD_REQUEST_SLA_CHECK_MINUTES = Number(process.env.MOD_REQUEST_SLA_CHECK_M
 /* =======================
    MIDDLEWARE
 ======================= */
-// Flexible CORS for development - accepts localhost on any port
+const normalizeOrigin = (value) => String(value || "").trim().replace(/\/+$/, "");
+const allowedOrigins = new Set(
+  [
+    process.env.FRONTEND_URL,
+    ...(process.env.FRONTEND_URLS || "").split(",")
+  ]
+    .map(normalizeOrigin)
+    .filter(Boolean)
+);
+
+const isDevLocalhost = (origin) =>
+  !origin || origin.includes("localhost") || origin.includes("127.0.0.1");
+
+const isVercelPreview = (origin) =>
+  /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(String(origin || ""));
+
 const corsOrigin = (origin, callback) => {
-  // Allow localhost on any port during development
-  if (!origin || origin.includes('localhost') || origin.includes('127.0.0.1')) {
-    callback(null, true);
-  } else if (process.env.NODE_ENV === 'production') {
-    // In production, use strict FRONTEND_URL
-    const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:3000";
-    callback(origin === allowedOrigin ? null : new Error('Not allowed by CORS'), origin === allowedOrigin);
-  } else {
-    callback(null, true);
-  }
+  const normalized = normalizeOrigin(origin);
+
+  // local development and non-browser clients
+  if (isDevLocalhost(normalized)) return callback(null, true);
+
+  // explicitly allowed production origins
+  if (allowedOrigins.has(normalized)) return callback(null, true);
+
+  // allow Vercel preview/production domains
+  if (isVercelPreview(normalized)) return callback(null, true);
+
+  return callback(new Error("Not allowed by CORS"), false);
 };
 
-app.use(cors({
+const corsOptions = {
   origin: corsOrigin,
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
