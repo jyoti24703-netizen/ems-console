@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Remove forced white text — now UI can use proper colors */
+body {
+  @apply bg-gradient-to-br from-gray-900 to-black min-h-screen flex items-center justify-center;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Smooth animations */
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
